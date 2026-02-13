@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import uuid
+from datetime import datetime
 
-from sqlalchemy import ForeignKey, Text
+from sqlalchemy import DateTime, ForeignKey, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -22,7 +23,9 @@ class LogEntry(Base, TimestampMixin):
         UUID(as_uuid=True), ForeignKey("clusters.id", ondelete="SET NULL")
     )
     raw_content: Mapped[str] = mapped_column(Text)
+    logged_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     level: Mapped[str | None] = mapped_column(index=True)
+    message: Mapped[str | None] = mapped_column(Text)
     source: Mapped[str | None] = mapped_column(index=True)
     embedding: Mapped[EmbeddingColumn]
 

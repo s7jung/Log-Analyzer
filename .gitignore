@@ -1,5 +1,6 @@
 # Environment
 .env
+.env.local
 .venv
 venv
 env
@@ -17,6 +18,12 @@ build/
 .vscode/
 *.swp
 *.swo
+
+# OS
+.DS_Store
+
+# Logs
+*.log
 
 # Testing / coverage
 .pytest_cache/
