@@ -11,10 +11,10 @@ from app.config import get_settings
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan: startup and shutdown hooks."""
-    # Startup: e.g. connect to DB, load resources
+    from app.database import create_tables, dispose_engine
+    await create_tables()
     yield
-    # Shutdown: e.g. close DB connections
-    pass
+    await dispose_engine()
 
 
 def create_application() -> FastAPI:
