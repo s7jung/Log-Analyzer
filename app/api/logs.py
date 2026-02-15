@@ -1,4 +1,4 @@
-"""Log upload endpoint."""
+"""Log endpoints."""
 
 from uuid import UUID
 
@@ -8,8 +8,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_session
 from app.models.log_entry import LogEntry
 from app.models.project import Project
-from app.schemas.log_entry import UploadLogResponse
+from app.schemas.log_entry import LogEntryResponse, UploadLogResponse
 from app.services.log_parser import parse_file_content
+from app.services.log_processing import LogProcessingService
 
 router = APIRouter()
 
@@ -68,3 +69,17 @@ async def upload_log(
         parsed=parsed_count,
         failed=failed_count,
     )
+
+
+@router.get("/projects/{project_id}/errors", response_model=list[LogEntryResponse])
+async def get_error_logs(
+    project_id: UUID,
+    session: AsyncSession = Depends(get_session),
+) -> list[LogEntryResponse]:
+    """Return ERROR and FATAL level logs for a project."""
+    project = await session.get(Project, project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found.")
+
+    service = LogProcessingService(session)
+    return await service.filter_error_logs(project_id)

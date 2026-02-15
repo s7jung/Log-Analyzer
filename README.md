@@ -5,11 +5,11 @@ Python 3.10+ recommended.
 ## Setup
 
 ```bash
-# From project root (Log-Analyzer/)
+# From project root
 python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+source .venv/bin/activate 
 
-# Install dependencies (use -r to read the file)
+# Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -24,5 +24,3 @@ uvicorn app.main:app --reload
 - API: http://127.0.0.1:8000  
 - Health: http://127.0.0.1:8000/api/v1/health  
 - Docs: http://127.0.0.1:8000/docs  
-
-Do not run `python app/main.py`; use `uvicorn app.main:app` from the project root.
